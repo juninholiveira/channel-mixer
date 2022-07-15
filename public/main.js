@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path")
 const { app, BrowserWindow } = require("electron")
-const isDev = require("electron-is-dev")
 
 function createWindow() {
 
@@ -20,7 +19,7 @@ function createWindow() {
 	)
 
 	// Open the DevTools.
-	if (isDev) {
+	if (app.isPackaged) {
 		mainWindow.webContents.openDevTools({ mode: "detach" })
 	}
 }
