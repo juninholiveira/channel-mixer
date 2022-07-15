@@ -1,6 +1,6 @@
 {
 	"env": {
-		"browser": true,
+		"commonjs": true,
 		"es2021": true,
 		"node": true
 	},
@@ -15,8 +15,7 @@
 		"ecmaFeatures": {
 			"jsx": true
 		},
-		"ecmaVersion": "latest",
-		"sourceType": "module"
+		"ecmaVersion": "latest"
 	},
 	"plugins": [
 		"react",
