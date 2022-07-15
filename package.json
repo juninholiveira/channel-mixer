@@ -2,11 +2,15 @@
   "name": "channel-mixer",
   "version": "0.1.0",
   "private": true,
+  "main": "public/main.js",
+  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently -k \"cross-env BROWSER=none npm run start\" \"npm run electron\"",
+    "electron": "wait-on tcp:3000 && electron ."
   },
   "dependencies": {
     "react": "^18.2.0",
