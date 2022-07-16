@@ -1,7 +1,6 @@
 export default function App() {
 
-	let a = 12
-	a = "teste"
+	const a = 12
 
 	return (<h1>channel-mixer</h1>)
 }
