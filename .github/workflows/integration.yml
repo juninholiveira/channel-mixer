@@ -10,8 +10,6 @@ on:
       - master
       - alpha
 
-  workflow_dispatch:
-
 jobs:
   integration:
     name: Test Code Integration
@@ -20,15 +18,15 @@ jobs:
     steps:
       - name: 🎟️ Checkout Repository
         uses: actions/checkout@v3
-          
+
       - name: 🗃️ Cache Yarn
         uses: c-hive/gha-yarn-cache@v2
-          
+
       - name: 🧪 Install Dependencies
         run: yarn
-        
+
       - name: 👨‍💻 Check Linting
         run: yarn lint
-        
+
       - name: 🤓 Run TypeScript
         run: yarn tsc
