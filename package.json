@@ -80,6 +80,14 @@
 	},
 	"linux": {
 		"target": "deb"
-	}
+	},
+	"nsis": {
+		"artifactName": "${productName}_${version}_${os}_setup.${ext}",
+		"allowToChangeInstallationDirectory": true,
+		"oneClick": false
+	  },
+	  "portable": {
+		"artifactName": "${productName}_${version}_${os}_portable.${ext}"
+	  }
   }
 }
