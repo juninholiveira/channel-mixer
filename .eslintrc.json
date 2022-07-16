@@ -17,6 +17,11 @@
 		},
 		"ecmaVersion": "latest"
 	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
 	"plugins": [
 		"react",
 		"@typescript-eslint"
