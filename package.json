@@ -11,8 +11,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:3000 && electronmon .\"",
-	"electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+	  "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
