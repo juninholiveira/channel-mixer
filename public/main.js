@@ -19,7 +19,7 @@ function createWindow() {
 	)
 
 	// Open the DevTools.
-	if (app.isPackaged) {
+	if (!app.isPackaged) {
 		mainWindow.webContents.openDevTools({ mode: "detach" })
 	}
 }
