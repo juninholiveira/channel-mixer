@@ -2,6 +2,8 @@
   "name": "channel-mixer",
   "version": "0.1.0",
   "private": true,
+  "author": "Leandro Junior",
+  "description": "A simple and practical utility to mix grayscale textures into a single RGBA mask.",
   "main": "public/main.js",
   "homepage": "./",
   "scripts": {
