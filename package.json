@@ -11,7 +11,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:3000 && electronmon .\""
+    "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:3000 && electronmon .\"",
+	"electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -52,5 +55,26 @@
     "development": [
 	  "last 1 electron version"
     ]
+  },
+  "build": {
+	"appId": "com.leandrojunior.channel-mixer",
+    "artifactName": "${productName}_${version}_${os}.${ext}",
+	"productName": "Channel Mixer",
+	"files": [
+		"build/**/*",
+		"node_modules/**/*"
+	],
+	"directories": {
+		"buildResources": "public"
+	},
+	"mac": {
+		"target": "dmg"
+	},
+	"win": {
+		"target": "nsis"
+	},
+	"linux": {
+		"target": "deb"
+	}
   }
 }
