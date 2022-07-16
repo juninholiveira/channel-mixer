@@ -62,7 +62,9 @@
 	"productName": "Channel Mixer",
 	"files": [
 		"build/**/*",
-		"node_modules/**/*"
+		"node_modules/**/*",
+		"!resources",
+		"!README.md"
 	],
 	"directories": {
 		"buildResources": "public"
@@ -71,7 +73,10 @@
 		"target": "dmg"
 	},
 	"win": {
-		"target": "nsis"
+		"target": [
+			"nsis",
+			"portable"
+		]
 	},
 	"linux": {
 		"target": "deb"
