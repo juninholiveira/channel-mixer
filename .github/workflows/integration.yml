@@ -27,7 +27,7 @@ jobs:
           node-version: 16
           
       - name: 🧪 Install Dependencies
-        run: yarn
+        uses: bahmutov/npm-install@v1
         
       - name: 👨‍💻 Check Linting
         run: yarn lint
