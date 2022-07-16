@@ -26,3 +26,6 @@ jobs:
         
       - name: Check Linting
         run: yarn lint
+        
+      - name: Run TypeScript
+        run: yarn tsc
