@@ -4,7 +4,6 @@ const path = require("path")
 
 function createWindow() {
 
-	// Create the browser window.
 	const mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -14,25 +13,21 @@ function createWindow() {
 		},
 	})
 
-	// and load the index.html of the app.
+	// Load index.html
 	mainWindow.loadURL(
 		app.isPackaged ? `file://${path.join(__dirname, "../build/index.html")}` : "http://localhost:3000"
 	)
 
-	// Open the DevTools.
+	// Open the DevTools in a separate window, only in development mode
 	if (!app.isPackaged) {
 		mainWindow.webContents.openDevTools({ mode: "detach" })
 	}
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// Called when Electron finishes its initialization
 app.whenReady().then(createWindow)
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bars to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit when all windows are closed, except on MacOS
 app.on("window-all-closed", () => {
 	if (process.platform !== "darwin") {
 		app.quit()
