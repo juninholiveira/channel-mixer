@@ -21,13 +21,15 @@ jobs:
       - name: 🎟️ Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 🛠️ Setup Node.js Environment
-        uses: actions/setup-node@v3.4.1
-        with:
-          node-version: 16
+      #- name: 🛠️ Setup Node.js Environment
+        #uses: actions/setup-node@v3.4.1
+        #with:
+          #node-version: 16
+          
+      - uses: c-hive/gha-yarn-cache@v2
           
       - name: 🧪 Install Dependencies
-        uses: bahmutov/npm-install@v1
+        run: yarn
         
       - name: 👨‍💻 Check Linting
         run: yarn lint
