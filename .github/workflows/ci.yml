@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 16
+          
+      - name: Install Dependencies
+        run: yarn
+        
+      - name: Check Linting
+        run: yarn lint
