@@ -8,9 +8,10 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		backgroundColor: "#1E1E1E",
-		//frame: true,
-		//fullscreen: false,
-		//fullscreenable: false,
+		title: "Channel Mixer",
+		frame: true,
+		fullscreen: false,
+		fullscreenable: false,
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
@@ -19,7 +20,6 @@ function createWindow() {
 	})
 
 	mainWindow.setMenuBarVisibility(false)
-	mainWindow.setMaximizable(false)
 
 	// Load index.html
 	mainWindow.loadURL(
