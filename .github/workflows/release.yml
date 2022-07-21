@@ -1,0 +1,29 @@
+name: 📦 Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+
+    # Only run if the commit starts with "chore(release)", meaning it comes from the Conventional Changelog Action
+    if: startsWith( github.event.head_commit.message, 'chore(release)' )
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+      - name: 🎟️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Build/Release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          release: true

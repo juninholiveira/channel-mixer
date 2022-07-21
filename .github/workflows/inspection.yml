@@ -1,0 +1,29 @@
+name: 🔍 Code Inspection
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  inspection:
+    name: 🔍 Inspection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🎟️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🗃️ Cache Yarn
+        uses: c-hive/gha-yarn-cache@v2
+
+      - name: 🧪 Install Dependencies
+        run: yarn
+
+      - name: 👨‍💻 Check Linting
+        run: yarn lint
+
+      - name: 🧮 Run TypeScript
+        run: yarn tsc
