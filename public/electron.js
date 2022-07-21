@@ -7,6 +7,7 @@ function createWindow() {
 	const mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
+		backgroundColor: "#1E1E1E",
 		webPreferences: {
 			nodeIntegration: true,
 			preload: path.join(__dirname, "preload.js"),
