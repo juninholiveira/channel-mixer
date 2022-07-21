@@ -1,4 +1,13 @@
-# 0.2.0 (2022-07-21)
+# [0.3.0](https://github.com/juninholiveira/channel-mixer/compare/v0.2.0...v0.3.0) (2022-07-21)
+
+
+### Features
+
+* Better native Titlebar appearence ([bd6a212](https://github.com/juninholiveira/channel-mixer/commit/bd6a212d2e342057e2a3f69d844d19dde4cc844a))
+
+
+
+# [0.2.0](https://github.com/juninholiveira/channel-mixer/compare/3acc999c4e23296b7d9316fb622d440a4920d243...v0.2.0) (2022-07-21)
 
 
 ### Bug Fixes
