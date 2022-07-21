@@ -1,3 +1,7 @@
 export default function App() {
-	return (<h1>channel-mixer</h1>)
+	return (
+		<div>
+			<h1>channel-mixer</h1>
+		</div>
+	)
 }
