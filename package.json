@@ -1,97 +1,97 @@
 {
-  "name": "channel-mixer",
-  "version": "0.3.0",
-  "private": true,
-  "author": "Leandro Junior",
-  "description": "A simple and practical utility to mix grayscale textures into a single RGBA mask.",
-  "main": "public/electron.js",
-  "homepage": "./",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint src --ext .ts,.tsx",
-    "tsc": "tsc --skipLibCheck",
-    "dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:3000 && electronmon .\"",
-    "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
-    "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
-  },
-  "devDependencies": {
-    "@types/node": "^18.0.4",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.30.6",
-    "@typescript-eslint/parser": "^5.30.6",
-    "autoprefixer": "^10.4.7",
-    "concurrently": "^7.2.2",
-    "cross-env": "^7.0.3",
-    "electron": "^19.0.8",
-    "electron-builder": "^23.1.0",
-    "electronmon": "^2.0.2",
-    "eslint": "^8.19.0",
-    "eslint-plugin-import-helpers": "^1.2.1",
-    "eslint-plugin-react": "^7.30.1",
-    "eslint-plugin-yml": "^1.1.0",
-    "postcss": "^8.4.14",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-preset-env": "^7.7.2",
-    "tailwindcss": "^3.1.6",
-    "typescript": "^4.7.4",
-    "wait-on": "^6.0.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
-  },
-  "build": {
-    "appId": "com.leandrojunior.channel-mixer",
-    "artifactName": "${productName}_${version}_${os}.${ext}",
-    "productName": "Channel Mixer",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "!resources",
-      "!README.md"
-    ],
-    "directories": {
-      "buildResources": "public"
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ]
-    },
-    "linux": {
-      "target": "deb"
-    },
-    "nsis": {
-      "artifactName": "${productName}_${version}_${os}_setup.${ext}",
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false
-    },
-    "portable": {
-      "artifactName": "${productName}_${version}_${os}_portable.${ext}"
-    }
-  }
+	"name": "channel-mixer",
+	"version": "0.3.0",
+	"private": true,
+	"author": "Leandro Junior",
+	"description": "A simple and practical utility to mix grayscale textures into a single RGBA mask.",
+	"main": "public/electron.js",
+	"homepage": "./",
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"lint": "eslint src --ext .ts,.tsx",
+		"tsc": "tsc --skipLibCheck",
+		"dev": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:3000 && electronmon .\"",
+		"electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+		"electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+		"electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+	},
+	"dependencies": {
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-scripts": "5.0.1"
+	},
+	"devDependencies": {
+		"@types/node": "^18.0.4",
+		"@types/react": "^18.0.15",
+		"@types/react-dom": "^18.0.6",
+		"@typescript-eslint/eslint-plugin": "^5.30.6",
+		"@typescript-eslint/parser": "^5.30.6",
+		"autoprefixer": "^10.4.7",
+		"concurrently": "^7.2.2",
+		"cross-env": "^7.0.3",
+		"electron": "^19.0.8",
+		"electron-builder": "^23.1.0",
+		"electronmon": "^2.0.2",
+		"eslint": "^8.19.0",
+		"eslint-plugin-import-helpers": "^1.2.1",
+		"eslint-plugin-react": "^7.30.1",
+		"eslint-plugin-yml": "^1.1.0",
+		"postcss": "^8.4.14",
+		"postcss-flexbugs-fixes": "^5.0.2",
+		"postcss-preset-env": "^7.7.2",
+		"tailwindcss": "^3.1.6",
+		"typescript": "^4.7.4",
+		"wait-on": "^6.0.1"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			"last 1 electron version"
+		],
+		"development": [
+			"last 1 electron version"
+		]
+	},
+	"build": {
+		"appId": "com.leandrojunior.channel-mixer",
+		"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}.${ext}",
+		"productName": "Channel Mixer",
+		"files": [
+			"build/**/*",
+			"node_modules/**/*",
+			"!resources",
+			"!README.md"
+		],
+		"directories": {
+			"buildResources": "public"
+		},
+		"mac": {
+			"target": "dmg"
+		},
+		"win": {
+			"target": [
+				"nsis",
+				"portable"
+			]
+		},
+		"linux": {
+			"target": "deb"
+		},
+		"nsis": {
+			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}_setup.${ext}",
+			"allowToChangeInstallationDirectory": true,
+			"oneClick": false
+		},
+		"portable": {
+			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}_portable.${ext}"
+		}
+	}
 }
