@@ -1,0 +1,43 @@
+name-template: Channel Mixer v$RESOLVED_VERSION
+
+tag-template: v$RESOLVED_VERSION
+
+categories:
+  - title: 🚀 Features
+    labels:
+      - "bump:minor"
+      - feat
+
+  - title: 🐛 Bug Fixes
+    labels:
+      - "bump:patch"
+      - fix
+
+  - title: 🧰 Maintenance
+    labels:
+      - "bump:major"
+
+  - title: ⚡ Performance Improvements
+    labels:
+      - perf
+
+change-template: "- $TITLE (#$NUMBER)"
+change-title-escapes: '\<*_&'
+no-changes-template: Well, looks like there is no change! weird... 🤷‍♂️
+
+version-resolver:
+  major:
+    labels:
+      - "bump:major"
+  minor:
+    labels:
+      - "bump:minor"
+  patch:
+    labels:
+      - "bump:patch"
+  default: patch
+
+template: |
+  ## Changes
+
+  $CHANGES

@@ -1,0 +1,81 @@
+name: 🎈 Integration
+
+on:
+  # eslint-disable-next-line yml/no-empty-mapping-value
+  workflow_call:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  validate:
+    name: 🖋️ Validate PR Title
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔎 Check Title
+        uses: amannn/action-semantic-pull-request@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏷️ Label the PR
+        uses: TimonVS/pr-labeler-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  inspection:
+    name: 🕵️‍♂️ Code Inspection
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🎟️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🗃️ Cache Yarn
+        uses: c-hive/gha-yarn-cache@v2
+
+      - name: 🧪 Install Dependencies
+        run: yarn
+
+      - name: 👨‍💻 Check Linting
+        run: yarn lint
+
+      - name: 🧮 Run TypeScript
+        run: yarn tsc
+
+  build:
+    name: 🏗️ Test Build
+    needs: inspection
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+      - name: 🎟️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🧮 Setup NodeJS Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: 🗃️ Install and Cache Dependencies
+        uses: bahmutov/npm-install@v1.8.15
+        with:
+          install-command: yarn --frozen-lockfile --network-timeout 600000
+
+      - name: 🛠️ Build Electron Artifacts
+        uses: samuelmeuli/action-electron-builder@v1
+        env:
+          RESOLVED_VERSION: v0.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release: false

@@ -1,0 +1,13 @@
+bump:major: "chore(major)*"
+bump:minor: "feat*"
+bump:patch: "fix*"
+
+chore: "chore*"
+feat: "feat*"
+fix: "fix*"
+refactor: "refactor*"
+perf: "perf*"
+build: "build*"
+ci: "ci*"
+test: "test*"
+docs: "docs*"
