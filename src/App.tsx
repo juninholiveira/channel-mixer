@@ -1,32 +1,46 @@
+/* eslint-disable no-magic-numbers */
 import { useState } from "react"
 
-import { Image } from "image-js"
+import { Image, ImageKind } from "image-js"
 
 export default function App() {
 
 	const [file, setFile] = useState<string | Promise<string>>("")
 
-	// function LoadFile(event: File | null) {
-	// 	if(event != null) {
-	// 		const file = event.target.files[0]
-	// 		const reader = new FileReader()
-	// 		reader.onload = function(event) {
-	// 			setSelectedFile(event?.target?.result ? event.target.result : "")
-	// 		}
-	// 		reader.readAsText(file)
-	// 	}
-	// }
+	const [redChannel, setRedChannel] = useState<string | Promise<string>>("")
+	const [greenChannel, setGreenChannel] = useState<string | Promise<string>>("")
+	const [blueChannel, setBlueChannel] = useState<string | Promise<string>>("")
+	const [alphaChannel, setAlphaChannel] = useState<string | Promise<string>>("")
 
 	async function Mix() {
 		try {
+
 			const image = await Image.load("X:/Pessoal/Dev/channel-mixer/src/T_RockyGround_4K_Albedo.jpg")
+			const r = await Image.load("X:/Pessoal/Dev/channel-mixer/data/T_RockyGround_4K_AO.jpg")
+			const g = await Image.load("X:/Pessoal/Dev/channel-mixer/data/T_RockyGround_4K_Roughness.jpg")
+			const b = await Image.load("X:/Pessoal/Dev/channel-mixer/data/T_RockyGround_4K_Bump.jpg")
+			// const a = await Image.load("X:/Pessoal/Dev/channel-mixer/data/T_RockyGround_4K_Depth.png")
 
-			const grey = image
-				.grey()
-				.resize({ width: 200 })
-				.toDataURL("image/png")
+			const greyR = r.grey()
+			const greyG = g.grey()
+			const greyB = b.grey()
+			const greyA = image.grey()
 
-			setFile(grey)
+			// eslint-disable-next-line no-magic-numbers
+			const newImage = new Image(4096, 4096, new Uint8Array(4096 * 4096 * 4).fill(255), { kind: "RGBA" as ImageKind })
+			console.log(newImage.channels)
+
+			// const imageToShow = newImage.toDataURL()
+
+			const mixedImage = newImage.setChannel(0, greyR).setChannel(1, greyG).setChannel(2, greyB).setChannel(3, greyA)
+
+			const dataUrlImage = mixedImage.toDataURL()
+
+			console.log(dataUrlImage)
+
+			setFile(dataUrlImage)
+
+			mixedImage.save("output.jpg")
 
 			// return grey.save("output.jpeg", { format: "png", encoder: })
 
