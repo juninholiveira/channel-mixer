@@ -23,7 +23,7 @@ function createWindow() {
 
 	// Load index.html
 	mainWindow.loadURL(
-		app.isPackaged ? `file://${path.join(__dirname, "../build/index.html")}` : "http://localhost:3000"
+		app.isPackaged ? `file://${path.join(__dirname, "../build/index.html")}` : "http://localhost:3000",
 	)
 
 	// Open the DevTools in a separate window, only in development mode
@@ -43,7 +43,10 @@ app.on("window-all-closed", () => {
 })
 
 app.on("activate", () => {
-	if (BrowserWindow.getAllWindows().length === 0) {
+
+	const maxNumberOfWindows = 0
+
+	if (BrowserWindow.getAllWindows().length === maxNumberOfWindows) {
 		createWindow()
 	}
 })
