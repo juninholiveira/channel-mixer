@@ -30,46 +30,32 @@ export default function App() {
 			const newImage = new Image(4096, 4096, new Uint8Array(4096 * 4096 * 4).fill(255), { kind: "RGBA" as ImageKind })
 			console.log(newImage.channels)
 
-			// const imageToShow = newImage.toDataURL()
-
 			const mixedImage = newImage.setChannel(0, greyR).setChannel(1, greyG).setChannel(2, greyB).setChannel(3, greyA)
 
 			const dataUrlImage = mixedImage.toDataURL()
 
+			// saveBlobToFile(await mixedImage.toBlob())
+
 			console.log(dataUrlImage)
 
 			setFile(dataUrlImage)
-
-			mixedImage.save("output.jpg")
-
-			// return grey.save("output.jpeg", { format: "png", encoder: })
 
 		} catch (error) {
 			console.log(error)
 		}
 	}
 
+	// async function saveBlobToFile(blob : Blob) {
+	// 	const fileData = new Int8Array(await blob.arrayBuffer())
+	// }
+
 	return (
 		<div>
 			<h1>channel-mixer</h1>
-			<button onClick={Mix}>Mix</button>
-			{/* <input type="file"
-				id="avatar" name="avatar"
-				onChange={e => {
-					if(e != null){
-						if(e.target){
-							if(e.target.files)
-								LoadFile(e.target.files[0])
-						}
-					}
-				}}
-				accept="image/png, image/jpeg" /> */}
-			{file ?
-				<p className="img-preview-wrapper">
-					{
-						<img src={file as string} alt="preview" />
-					}
-				</p> : null}
+			<button onClick={Mix} className="bg-zinc-300">
+				Mix
+			</button>
+			{file ? <img src={file as string} alt="preview" /> : null}
 		</div>
 	)
 }
