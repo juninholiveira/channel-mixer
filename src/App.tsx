@@ -36,6 +36,8 @@ export default function App() {
 
 			// saveBlobToFile(await mixedImage.toBlob())
 
+			window.fs.writeFile()
+
 			console.log(dataUrlImage)
 
 			setFile(dataUrlImage)
