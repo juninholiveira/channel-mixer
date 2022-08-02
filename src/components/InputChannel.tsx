@@ -19,8 +19,8 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 	}, [isWhite])
 
 	return (
-		<div id="input-channel" className="flex flex-col gap-3 w-32">
-			<div id="image-input" className="w-32 h-32 border-2 border-light-accent rounded-md">
+		<div id="input-channel" className="flex flex-col gap-3 w-36">
+			<div id="image-input" className="w-full h-36 border-2 border-light-accent rounded-md">
 
 			</div>
 			<div id="bottom" className="flex flex-row gap-2">
