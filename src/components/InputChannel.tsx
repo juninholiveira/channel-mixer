@@ -1,5 +1,7 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
+
+import { FileArrowUp, FileX } from "phosphor-react"
 
 import { TChannel } from "../types/types"
 
@@ -32,7 +34,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		})
 	}, [])
 
-	const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+	const { getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
 		onDrop,
 		multiple: false,
 		accept: {
@@ -48,16 +50,18 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
 			<div id="image-input" {...getRootProps()}
 				className={
-					"w-full h-36 border-2 rounded-md"
+					"w-full h-36 border-2 rounded-md flex items-center justify-center"
 					+ " " +
 					(isDragAccept ? "drag-accept" : isDragReject ? "drag-reject" : "neutral")
 				}
 			>
 				<input {...getInputProps()} />
 				{
-					isDragActive ?
-						<p>Drop the files here ...</p> :
-						<p>Drag n drop some files here, or click to select files</p>
+					isDragAccept ?
+						<FileArrowUp color="#00DA16" weight="regular" size={32}/> :
+						isDragReject ?
+							<FileX color="#DA0000" weight="regular" size={32}/> :
+							<p className="text-light-accent text-base">{channel.toUpperCase()}</p>
 				}
 			</div>
 			<div id="bottom" className="flex flex-row gap-2">
