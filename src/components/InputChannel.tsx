@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
+import { useDropzone } from "react-dropzone"
 
 import { TChannel } from "../types/types"
 
@@ -14,14 +15,50 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		setIsWhite(!isWhite)
 	}
 
-	useEffect(() => {
-		console.log(isWhite)
-	}, [isWhite])
+	const onDrop = useCallback((acceptedFiles:any) => {
+
+		// Do something with the files
+		acceptedFiles.forEach((file:any) => {
+			const reader = new FileReader()
+
+			reader.onabort = () => console.log("file reading was aborted")
+			reader.onerror = () => console.log("file reading has failed")
+			reader.onload = () => {
+				// Do whatever you want with the file contents
+				const binaryStr = reader.result
+				console.log(binaryStr)
+			}
+			reader.readAsArrayBuffer(file)
+		})
+	}, [])
+
+	const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+		onDrop,
+		multiple: false,
+		accept: {
+			"image/jpeg": [],
+			"image/png": [],
+			// "image/tiff": [],
+			// "image/pipeg": [],
+			// "image/bmp": [],
+		},
+	})
 
 	return (
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
-			<div id="image-input" className="w-full h-36 border-2 border-light-accent rounded-md">
-
+			<div id="image-input" {...getRootProps()}
+				className={
+					"w-full h-36 border-2 rounded-md"
+					+ " " +
+					(isDragAccept ? "drag-accept" : isDragReject ? "drag-reject" : "neutral")
+				}
+			>
+				<input {...getInputProps()} />
+				{
+					isDragActive ?
+						<p>Drop the files here ...</p> :
+						<p>Drag n drop some files here, or click to select files</p>
+				}
 			</div>
 			<div id="bottom" className="flex flex-row gap-2">
 				<textarea id="channel-suffix"

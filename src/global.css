@@ -7,3 +7,19 @@ body, html, #root {
 
 	-webkit-font-smoothing: antialiased;
 }
+
+.drag-active {
+	@apply border-purple-500
+}
+
+.drag-accept {
+	@apply border-[#00DA16]
+}
+
+.drag-reject {
+	@apply border-[#DA0000]
+}
+
+.neutral {
+	@apply border-light-accent
+}
