@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
-import { FileArrowUp, FileX } from "phosphor-react"
+import { FileArrowUp, FileX, Trash } from "phosphor-react"
 
 import { TChannel } from "../types/types"
 
@@ -48,28 +48,34 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
 			<div id="image-input" {...getRootProps()}
 				className={
-					"w-full h-36 border-2 rounded-md flex items-center justify-center relative"
+					"w-full h-36 border-2 rounded-md flex items-center justify-center relative group"
 					+ " " +
 					(isDragAccept ? "drag-accept" : isDragReject ? "drag-reject" : "neutral")
+					+ " " +
+					"hover:"
 				}
 			>
 				<input {...getInputProps()} />
 				{
-					isDragAccept ?
-						<FileArrowUp color="#00DA16" weight="regular" size={32}/> :
-						isDragReject ?
-							<FileX color="#DA0000" weight="regular" size={32}/> :
-							imageFile == undefined ?
-								<p className={"text-base" + " " + (isWhite ? "text-light-background" : "text-light-accent")}>{channel.toUpperCase()}</p> :
+					// Add icons based on the type of the drag
+					isDragAccept ? <FileArrowUp color="#00DA16" weight="regular" size={32}/> :
+						isDragReject ? <FileX color="#DA0000" weight="regular" size={32}/> :
+							// Case there's no image loaded, show a text with the channel name
+							imageFile == undefined ? <p className={"text-base" + " " + (isWhite ? "text-light-background" : "text-light-accent")}>{channel.toUpperCase()}</p> :
 								<></>
+				}
+				{
+					// Shows a Trash icon when hovering the container with an image loaded
+					imageFile != undefined ? <Trash color="#CFF465" weight="regular" size={32} className="hidden group-hover:block"/> : <></>
 				}
 				<div className={
 					"absolute -z-10 h-full w-full m-0 p-0 flex"
-						+ " " +
-						(isWhite ? "bg-zinc-200" : "bg-black")
+					+ " " +
+					(isWhite ? "bg-zinc-200" : "bg-black")
 				}
 				>
 					{
+						// Case there's an image loaded, show it on the img tag
 						imageFile != undefined ? <img src={imageFile} alt="image" className="max-w-full max-h-full m-auto" /> : <></>
 					}
 				</div>
