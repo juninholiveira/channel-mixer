@@ -60,7 +60,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 						isDragReject ?
 							<FileX color="#DA0000" weight="regular" size={32}/> :
 							imageFile == undefined ?
-								<p className="text-light-accent text-base">{channel.toUpperCase()}</p> :
+								<p className={"text-base" + " " + (isWhite ? "text-light-background" : "text-light-accent")}>{channel.toUpperCase()}</p> :
 								<></>
 				}
 				<div className={
