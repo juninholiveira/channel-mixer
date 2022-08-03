@@ -51,7 +51,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
 			<div id="image-input" {...getRootProps()}
 				className={
-					"w-full h-36 border-2 rounded-md flex items-center justify-center relative group"
+					"w-full h-36 border-2 rounded-md flex items-center justify-center relative group cursor-pointer"
 					+ " " +
 					(isDragAccept ? "border-[#00DA16] border-dashed" : isDragReject ? "border-[#DA0000] border-dashed" : "border-light-accent")
 				}
@@ -65,13 +65,17 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 					isDragAccept ? <FileArrowUp color="#00DA16" weight="regular" size={32}/> :
 						isDragReject ? <FileX color="#DA0000" weight="regular" size={32}/> :
 							// Case there's no image loaded, show a text with the channel name
-							imageFile == undefined ? <p className={"text-base" + " " + (isWhite ? "text-light-background" : "text-light-accent")}>{channel.toUpperCase()}</p> :
+							imageFile == undefined ? <p className={"text-base group-hover:hidden" + " " + (isWhite ? "text-light-background" : "text-light-accent")}>{channel.toUpperCase()}</p> :
 								<></>
 				}
 				{
 					// Shows a Trash icon when hovering the container with an image loaded
 					imageFile != undefined ? <Trash color="#CFF465" weight="regular" size={32} className="hidden group-hover:block"/> : <></>
 				}
+				{
+					imageFile == undefined ? <FileArrowUp color="#CFF465" weight="regular" size={32} className="hidden group-hover:block" /> : <></>
+				}
+
 				<div className={
 					"absolute -z-10 h-full w-full m-0 p-0 flex"
 					+ " " +
