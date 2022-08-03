@@ -7,10 +7,10 @@ export default function App() {
 
 	const [file, setFile] = useState<string | Promise<string>>("")
 
-	const [redChannel, setRedChannel] = useState<string | Promise<string>>("")
-	const [greenChannel, setGreenChannel] = useState<string | Promise<string>>("")
-	const [blueChannel, setBlueChannel] = useState<string | Promise<string>>("")
-	const [alphaChannel, setAlphaChannel] = useState<string | Promise<string>>("")
+	// const [redChannel, setRedChannel] = useState<string | Promise<string>>("")
+	// const [greenChannel, setGreenChannel] = useState<string | Promise<string>>("")
+	// const [blueChannel, setBlueChannel] = useState<string | Promise<string>>("")
+	// const [alphaChannel, setAlphaChannel] = useState<string | Promise<string>>("")
 
 	async function Mix() {
 		try {
