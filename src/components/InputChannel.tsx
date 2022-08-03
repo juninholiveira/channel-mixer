@@ -90,7 +90,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 						text-xs text-light-accent leading-3
 						focus:outline-none focus:border-[#00DA16]"
 					maxLength={10} placeholder={`${channel} suffix...`}/>
-				<Switch isWhite={isWhite} handleSwitch={() => handleSwitch()} />
+				<Switch isWhite={isWhite} isEnable={imageFile == undefined} handleSwitch={() => handleSwitch()} />
 			</div>
 		</div>
 	)
