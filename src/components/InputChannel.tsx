@@ -3,7 +3,6 @@ import { useDropzone } from "react-dropzone"
 
 import { FileArrowUp, FileX } from "phosphor-react"
 
-import TestingImage from "../T_RockyGround_4K_Roughness.jpg"
 import { TChannel } from "../types/types"
 
 interface IInputChannelProps {
@@ -13,27 +12,24 @@ interface IInputChannelProps {
 export default function InputChannel({ channel }:IInputChannelProps) {
 
 	const [isWhite, setIsWhite] = useState(false)
-	const [imageFile, setImageFile] = useState(false)
+	const [imageFile, setImageFile] = useState<string | undefined>()
 
 	function handleSwitch() {
 		setIsWhite(!isWhite)
 	}
 
-	const onDrop = useCallback((acceptedFiles:any) => {
+	const onDrop = useCallback((acceptedFiles:File[]) => {
 
-		// Do something with the files
-		acceptedFiles.forEach((file:any) => {
-			const reader = new FileReader()
+		const reader = new FileReader()
 
-			reader.onabort = () => console.log("file reading was aborted")
-			reader.onerror = () => console.log("file reading has failed")
-			reader.onload = () => {
-				// Do whatever you want with the file contents
-				const binaryStr = reader.result
-				console.log(binaryStr)
-			}
-			reader.readAsArrayBuffer(file)
-		})
+		reader.onabort = () => console.log("file reading was aborted")
+		reader.onerror = () => console.log("file reading has failed")
+		reader.onload = () => {
+			setImageFile(reader.result as string)
+		}
+
+		reader.readAsDataURL(acceptedFiles[0])
+
 	}, [])
 
 	const { getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
@@ -54,8 +50,6 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 				className={
 					"w-full h-36 border-2 rounded-md flex items-center justify-center relative"
 					+ " " +
-					(isWhite ? "bg-zinc-200" : "bg-black")
-					+ " " +
 					(isDragAccept ? "drag-accept" : isDragReject ? "drag-reject" : "neutral")
 				}
 			>
@@ -65,11 +59,18 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 						<FileArrowUp color="#00DA16" weight="regular" size={32}/> :
 						isDragReject ?
 							<FileX color="#DA0000" weight="regular" size={32}/> :
-							<p className="text-light-accent text-base">{channel.toUpperCase()}</p>
+							imageFile == undefined ?
+								<p className="text-light-accent text-base">{channel.toUpperCase()}</p> :
+								<></>
 				}
-				<div className="absolute -z-10 m-0">
+				<div className={
+					"absolute -z-10 h-full w-full m-0 p-0 flex"
+						+ " " +
+						(isWhite ? "bg-zinc-200" : "bg-black")
+				}
+				>
 					{
-						imageFile ? <img src={TestingImage} alt="image" /> : <></>
+						imageFile != undefined ? <img src={imageFile} alt="image" className="max-w-full max-h-full m-auto" /> : <></>
 					}
 				</div>
 			</div>
