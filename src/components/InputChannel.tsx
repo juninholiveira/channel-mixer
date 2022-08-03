@@ -27,6 +27,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		reader.onerror = () => console.log("file reading has failed")
 		reader.onload = () => {
 			setImageFile(reader.result as string)
+			setIsWhite(false)
 		}
 
 		reader.readAsDataURL(acceptedFiles[0])
