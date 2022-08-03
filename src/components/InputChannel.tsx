@@ -76,7 +76,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 				>
 					{
 						// Case there's an image loaded, show it on the img tag
-						imageFile != undefined ? <img src={imageFile} alt="image" className="max-w-full max-h-full m-auto" /> : <></>
+						imageFile != undefined ? <img src={imageFile} alt="image" className="max-w-full max-h-full m-auto group-hover:brightness-50" /> : <></>
 					}
 				</div>
 			</div>
