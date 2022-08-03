@@ -34,8 +34,6 @@ jobs:
     steps:
       - name: 🎟️ Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: 🗃️ Cache Yarn
         uses: c-hive/gha-yarn-cache@v2
