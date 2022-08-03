@@ -45,6 +45,11 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		},
 	})
 
+	function DeleteImage() {
+		console.log("teste")
+		setImageFile(undefined)
+	}
+
 	return (
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
 			<div id="image-input" {...getRootProps()}
@@ -55,8 +60,11 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 					+ " " +
 					"hover:"
 				}
+				// Conditionally add an onClick event only if there's an image loaded, or else it would interfere with the click to open file system dialog
+				{...(imageFile != undefined && { onClick: () => DeleteImage() })}
+
 			>
-				<input {...getInputProps()} />
+				<input {...getInputProps()}/>
 				{
 					// Add icons based on the type of the drag
 					isDragAccept ? <FileArrowUp color="#00DA16" weight="regular" size={32}/> :
