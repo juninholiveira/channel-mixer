@@ -34,6 +34,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 
 	const { getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
 		onDrop,
+		noClick: imageFile != undefined,
 		multiple: false,
 		accept: {
 			"image/jpeg": [],
