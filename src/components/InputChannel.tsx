@@ -51,9 +51,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 				className={
 					"w-full h-36 border-2 rounded-md flex items-center justify-center relative group"
 					+ " " +
-					(isDragAccept ? "drag-accept" : isDragReject ? "drag-reject" : "neutral")
-					+ " " +
-					"hover:"
+					(isDragAccept ? "border-[#00DA16] border-dashed" : isDragReject ? "border-[#DA0000] border-dashed" : "border-light-accent")
 				}
 				// Conditionally add an onClick event only if there's an image loaded, or else it would interfere with the click to open file system dialog
 				{...(imageFile != undefined && { onClick: () => setImageFile(undefined)})}
@@ -89,7 +87,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 					className="
 						resize-none p-1 border-2 h-6 border-light-accent bg-light-background overflow-hidden rounded-md
 						text-xs text-light-accent leading-3
-						focus:outline-none focus:border-green-800"
+						focus:outline-none focus:border-[#00DA16]"
 					maxLength={10} placeholder={`${channel} suffix...`}/>
 				<label className="inline-flex relative items-center cursor-pointer border-2 border-light-accent rounded-md p-0 m-0">
 					<input
