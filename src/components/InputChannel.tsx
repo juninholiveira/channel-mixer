@@ -8,9 +8,10 @@ import Switch from "./Switch"
 
 interface IInputChannelProps {
 	channel: TChannel
+	setInputString: (channel:TChannel, value:string) => void
 }
 
-export default function InputChannel({ channel }:IInputChannelProps) {
+export default function InputChannel({ channel, setInputString }:IInputChannelProps) {
 
 	const [isWhite, setIsWhite] = useState(false)
 	const [imageFile, setImageFile] = useState<string | undefined>()
@@ -28,6 +29,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		reader.onload = () => {
 			setImageFile(reader.result as string)
 			setIsWhite(false)
+			setInputString(channel, reader.result as string)
 		}
 
 		reader.readAsDataURL(acceptedFiles[0])
