@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body, html, #root {
+    @apply h-screen w-screen m-0 p-0 box-border;
+
+	-webkit-font-smoothing: antialiased;
+
+	/* Make content not selectable */
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}

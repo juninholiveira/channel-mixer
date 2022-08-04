@@ -1,0 +1,1 @@
+export type TChannel = "red" | "green" | "blue" | "alpha"
