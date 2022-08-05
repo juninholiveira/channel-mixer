@@ -18,6 +18,12 @@ export default function InputChannel({ channel, setInputString }:IInputChannelPr
 
 	function handleSwitch() {
 		setIsWhite(!isWhite)
+		setInputString(channel, isWhite ? "white" : "black")
+	}
+
+	function handleDelete() {
+		setImageFile(undefined)
+		setInputString(channel, isWhite ? "white" : "black")
 	}
 
 	const onDrop = useCallback((acceptedFiles:File[]) => {
@@ -58,7 +64,7 @@ export default function InputChannel({ channel, setInputString }:IInputChannelPr
 					(isDragAccept ? "border-[#00DA16] border-dashed" : isDragReject ? "border-[#DA0000] border-dashed" : "border-light-accent")
 				}
 				// Conditionally add an onClick event only if there's an image loaded, or else it would interfere with the click to open file system dialog
-				{...(imageFile != undefined && { onClick: () => setImageFile(undefined)})}
+				{...(imageFile != undefined && { onClick: () => handleDelete()})}
 
 			>
 				<input {...getInputProps()}/>
