@@ -8,15 +8,17 @@ import InputChannel from "./components/InputChannel"
 import MixButton from "./components/MixButton"
 import { TChannel } from "./types/types"
 
-interface ImageBlueprint {
-	r: string | undefined
-	rIsWhite: boolean
-	g: string | undefined
-	gIsWhite: boolean
-	b: string | undefined
-	bIsWhite: boolean
-	a: string | undefined
-	aIsWhite: boolean
+interface IChannelBlueprint {
+	dataURL: string | undefined
+	image: Image | undefined
+	isWhite: boolean
+}
+
+interface IImageBlueprint {
+	red: IChannelBlueprint,
+	green: IChannelBlueprint,
+	blue: IChannelBlueprint,
+	alpha: IChannelBlueprint,
 }
 
 export default function App() {
@@ -30,37 +32,33 @@ export default function App() {
 	// const [blueInputString, setBlueInputString] = useState<string | "white" | "black" | undefined>("black")
 	// const [alphaInputString, setAlphaInputString] = useState<string | "white" | "black" | undefined>("black")
 
-	const imageBlueprint:ImageBlueprint = {
-		r: undefined,
-		rIsWhite: false,
-		g: undefined,
-		gIsWhite: false,
-		b: undefined,
-		bIsWhite: false,
-		a: undefined,
-		aIsWhite: false,
+	const imageBlueprint:IImageBlueprint = {
+		red: {dataURL: undefined, image: undefined, isWhite: false},
+		green: {dataURL: undefined, image: undefined, isWhite: false},
+		blue: {dataURL: undefined, image: undefined, isWhite: false},
+		alpha: {dataURL: undefined, image: undefined, isWhite: false},
 	}
 
 	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
 		if (channel == "red") {
 			// setRedInputString(value)
-			imageBlueprint.r = value
-			imageBlueprint.rIsWhite = isWhite
+			imageBlueprint.red.dataURL = value
+			imageBlueprint.red.isWhite = isWhite
 		}
 		else if (channel == "green") {
 			// setGreenInputString(value)
-			imageBlueprint.g = value
-			imageBlueprint.gIsWhite = isWhite
+			imageBlueprint.green.dataURL = value
+			imageBlueprint.green.isWhite = isWhite
 		}
 		else if (channel == "blue") {
 			// setBlueInputString(value)
-			imageBlueprint.b = value
-			imageBlueprint.bIsWhite = isWhite
+			imageBlueprint.blue.dataURL = value
+			imageBlueprint.blue.isWhite = isWhite
 		}
 		else if (channel == "alpha") {
 			// setAlphaInputString(value)
-			imageBlueprint.a = value
-			imageBlueprint.aIsWhite = isWhite
+			imageBlueprint.alpha.dataURL = value
+			imageBlueprint.alpha.isWhite = isWhite
 		}
 	}
 
@@ -70,33 +68,44 @@ export default function App() {
 			// ETAPAS
 
 			// Carregar todos os arquivos de imagem carregados
-			let r, g, b, a : Image | undefined = undefined
-
-			if (imageBlueprint.r !== undefined)
-				r = await Image.load(imageBlueprint.r)
-			if (imageBlueprint.g !== undefined)
-				g = await Image.load(imageBlueprint.g)
-			if (imageBlueprint.b !== undefined)
-				b = await Image.load(imageBlueprint.b)
-			if (imageBlueprint.a !== undefined)
-				a = await Image.load(imageBlueprint.a)
+			if (imageBlueprint.red.dataURL !== undefined)
+				imageBlueprint.red.image = await Image.load(imageBlueprint.red.dataURL)
+			if (imageBlueprint.green.dataURL !== undefined)
+				imageBlueprint.green.image = await Image.load(imageBlueprint.green.dataURL)
+			if (imageBlueprint.blue.dataURL !== undefined)
+				imageBlueprint.blue.image = await Image.load(imageBlueprint.blue.dataURL)
+			if (imageBlueprint.alpha.dataURL !== undefined)
+				imageBlueprint.alpha.image = await Image.load(imageBlueprint.alpha.dataURL)
 
 			// Barrar se houver tamanhos diferentes
-			// eslint-disable-next-line array-element-newline, array-bracket-newline
-			const filteredChannelsWithImage = [r, g, b, a].filter(image => image) as Image[]
-			if (filteredChannelsWithImage.every( v => v.width === filteredChannelsWithImage[0].width) === false) {
-				throw new Error("Different width")
-			} else if (filteredChannelsWithImage.every( v => v.height === filteredChannelsWithImage[0].height) === false) {
-				throw new Error("Different height")
-			}
+			const arrayOfTex = [
+				imageBlueprint.red.image,
+				imageBlueprint.green.image,
+				imageBlueprint.blue.image,
+				imageBlueprint.alpha.image,
+			].filter(image => image !== undefined) as Image[]
 
-			// Converter elas para cinza com 1 canal só por segurança
-			const greyedImages = filteredChannelsWithImage.map(image => {
+			if (arrayOfTex.every( v => v.width === arrayOfTex[0].width) === false)
+				throw new Error("Different width")
+			else if (arrayOfTex.every( v => v.height === arrayOfTex[0].height) === false)
+				throw new Error("Different height")
+
+			// Converter elas para cinza (1 canal) só por segurança
+			const greyedImages = arrayOfTex.map(image => {
 				if (image.components === 1)
 					return image
 				else
 					return image.grey()
 			})
+
+			if(imageBlueprint.red.image?.components === 1)
+				imageBlueprint.red.image = imageBlueprint.red.image.grey()
+			if(imageBlueprint.green.image?.components === 1)
+				imageBlueprint.green.image = imageBlueprint.green.image.grey()
+			if(imageBlueprint.blue.image?.components === 1)
+				imageBlueprint.blue.image = imageBlueprint.blue.image.grey()
+			if(imageBlueprint.alpha.image?.components === 1)
+				imageBlueprint.alpha.image = imageBlueprint.alpha.image.grey()
 
 			// Criar uma imagem ou preta ou branca para os restantes
 
@@ -106,41 +115,41 @@ export default function App() {
 
 			// Loads the input files
 			if(redInputString === "white")
-				r = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
+				rTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
 			else if(redInputString === "black")
-				r = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
+				rTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
 			else
-				r = await Image.load(redInputString as string)
+				rTex = await Image.load(redInputString as string)
 
 			if(greenInputString === "white")
-				g = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
+				gTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
 			else if(greenInputString === "black")
-				g = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
+				gTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
 			else
-				g = await Image.load(greenInputString as string)
+				gTex = await Image.load(greenInputString as string)
 
 			if(blueInputString === "white")
-				b = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
+				bTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
 			else if(blueInputString === "black")
-				b = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
+				bTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
 			else
-				b = await Image.load(blueInputString as string)
+				bTex = await Image.load(blueInputString as string)
 
 			if(alphaInputString === "white")
-				a = new Image(512, 512, new Array(512 * 512 * 1).fill(255), { kind: "GREY" as ImageKind})
+				aTex = new Image(512, 512, new Array(512 * 512 * 1).fill(255), { kind: "GREY" as ImageKind})
 			else if(alphaInputString === "black")
-				a = new Image(512, 512, new Array(512 * 512 * 1).fill(0), { kind: "GREY" as ImageKind})
+				aTex = new Image(512, 512, new Array(512 * 512 * 1).fill(0), { kind: "GREY" as ImageKind})
 			else
-				a = await Image.load(alphaInputString as string)
+				aTex = await Image.load(alphaInputString as string)
 
 			// Makes sure all of them are grey
-			const greyR = r.grey()
-			const greyG = g.grey()
-			const greyB = b.grey()
-			const greyA = a.grey()
+			const greyR = rTex.grey()
+			const greyG = gTex.grey()
+			const greyB = bTex.grey()
+			const greyA = aTex.grey()
 
 			// eslint-disable-next-line no-magic-numbers
-			const newImage = new Image(r.height, r.width, new Uint8Array(r.height * r.width * 4).fill(255), { kind: "RGBA" as ImageKind })
+			const newImage = new Image(rTex.height, rTex.width, new Uint8Array(rTex.height * rTex.width * 4).fill(255), { kind: "RGBA" as ImageKind })
 
 			// eslint-disable-next-line no-magic-numbers
 			const mixedImage = newImage.setChannel(0, greyR).setChannel(1, greyG).setChannel(2, greyB).setChannel(3, greyA)
