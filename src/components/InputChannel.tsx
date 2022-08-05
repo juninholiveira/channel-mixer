@@ -8,22 +8,22 @@ import Switch from "./Switch"
 
 interface IInputChannelProps {
 	channel: TChannel
-	setInputString: (channel:TChannel, value:string) => void
+	SetImageBlueprint: (channel:TChannel, value:string | undefined, isWhite:boolean) => void
 }
 
-export default function InputChannel({ channel, setInputString }:IInputChannelProps) {
+export default function InputChannel({ channel, SetImageBlueprint }:IInputChannelProps) {
 
 	const [isWhite, setIsWhite] = useState(false)
 	const [imageFile, setImageFile] = useState<string | undefined>()
 
 	function handleSwitch() {
 		setIsWhite(!isWhite)
-		setInputString(channel, isWhite ? "white" : "black")
+		SetImageBlueprint(channel, undefined, isWhite)
 	}
 
 	function handleDelete() {
 		setImageFile(undefined)
-		setInputString(channel, isWhite ? "white" : "black")
+		SetImageBlueprint(channel, undefined, isWhite)
 	}
 
 	const onDrop = useCallback((acceptedFiles:File[]) => {
@@ -35,7 +35,7 @@ export default function InputChannel({ channel, setInputString }:IInputChannelPr
 		reader.onload = () => {
 			setImageFile(reader.result as string)
 			setIsWhite(false)
-			setInputString(channel, reader.result as string)
+			SetImageBlueprint(channel, reader.result as string, isWhite)
 		}
 
 		reader.readAsDataURL(acceptedFiles[0])

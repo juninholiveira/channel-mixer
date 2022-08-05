@@ -41,19 +41,27 @@ export default function App() {
 		aIsWhite: false,
 	}
 
-	function SetInputString (channel:TChannel, value:string) {
-		if (channel == "red")
+	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
+		if (channel == "red") {
 			// setRedInputString(value)
 			imageBlueprint.r = value
-		if (channel == "green")
+			imageBlueprint.rIsWhite = isWhite
+		}
+		else if (channel == "green") {
 			// setGreenInputString(value)
 			imageBlueprint.g = value
-		if (channel == "blue")
+			imageBlueprint.gIsWhite = isWhite
+		}
+		else if (channel == "blue") {
 			// setBlueInputString(value)
 			imageBlueprint.b = value
-		if (channel == "alpha")
+			imageBlueprint.bIsWhite = isWhite
+		}
+		else if (channel == "alpha") {
 			// setAlphaInputString(value)
 			imageBlueprint.a = value
+			imageBlueprint.aIsWhite = isWhite
+		}
 	}
 
 	async function Mix() {
@@ -158,10 +166,10 @@ export default function App() {
 	return (
 		<main className="flex flex-col gap-8 w-full h-full items-center justify-center">
 			<section id="input" className="flex flex-row gap-3">
-				<InputChannel channel="red" setInputString={(channel, value) => SetInputString(channel, value)}/>
-				<InputChannel channel="green" setInputString={(channel, value) => SetInputString(channel, value)}/>
-				<InputChannel channel="blue" setInputString={(channel, value) => SetInputString(channel, value)}/>
-				<InputChannel channel="alpha" setInputString={(channel, value) => SetInputString(channel, value)}/>
+				<InputChannel channel="red" SetImageBlueprint={(channel, value, isWhite) => SetImageBlueprint(channel, value, isWhite)}/>
+				<InputChannel channel="green" SetImageBlueprint={(channel, value, isWhite) => SetImageBlueprint(channel, value, isWhite)}/>
+				<InputChannel channel="blue" SetImageBlueprint={(channel, value, isWhite) => SetImageBlueprint(channel, value, isWhite)}/>
+				<InputChannel channel="alpha" SetImageBlueprint={(channel, value, isWhite) => SetImageBlueprint(channel, value, isWhite)}/>
 			</section>
 			<section id="output" className="flex flex-row gap-3">
 				<MixButton handleClick={() => Mix()}/>
