@@ -23,11 +23,9 @@ interface IImageBlueprint {
 
 export default function App() {
 
-	console.log("Renderizou App.tsx")
-
 	const [preview, setPreview] = useState<string | undefined>(undefined)
 
-	let imageBlueprint:IImageBlueprint = {
+	const imageBlueprint:IImageBlueprint = {
 		red: {dataURL: undefined, image: undefined, isWhite: false},
 		green: {dataURL: undefined, image: undefined, isWhite: false},
 		blue: {dataURL: undefined, image: undefined, isWhite: false},
@@ -55,7 +53,6 @@ export default function App() {
 			imageBlueprint.alpha.dataURL = value
 			imageBlueprint.alpha.isWhite = isWhite
 		}
-		console.log(imageBlueprint)
 	}
 
 	async function Mix() {
@@ -63,22 +60,26 @@ export default function App() {
 
 			// ETAPAS
 
+			// Criar um clone do ImageBlueprint para usar no processamento
+			const image : IImageBlueprint = Object.assign({}, imageBlueprint)
+			console.log(image)
+
 			// Carregar todos os arquivos de imagem carregados
-			if (imageBlueprint.red.dataURL !== undefined)
-				imageBlueprint.red.image = await Image.load(imageBlueprint.red.dataURL)
-			if (imageBlueprint.green.dataURL !== undefined)
-				imageBlueprint.green.image = await Image.load(imageBlueprint.green.dataURL)
-			if (imageBlueprint.blue.dataURL !== undefined)
-				imageBlueprint.blue.image = await Image.load(imageBlueprint.blue.dataURL)
-			if (imageBlueprint.alpha.dataURL !== undefined)
-				imageBlueprint.alpha.image = await Image.load(imageBlueprint.alpha.dataURL)
+			if (image.red.dataURL !== undefined)
+				image.red.image = await Image.load(image.red.dataURL)
+			if (image.green.dataURL !== undefined)
+				image.green.image = await Image.load(image.green.dataURL)
+			if (image.blue.dataURL !== undefined)
+				image.blue.image = await Image.load(image.blue.dataURL)
+			if (image.alpha.dataURL !== undefined)
+				image.alpha.image = await Image.load(image.alpha.dataURL)
 
 			// Barrar se houver tamanhos diferentes
 			const arrayOfTex = [
-				imageBlueprint.red.image,
-				imageBlueprint.green.image,
-				imageBlueprint.blue.image,
-				imageBlueprint.alpha.image,
+				image.red.image,
+				image.green.image,
+				image.blue.image,
+				image.alpha.image,
 			].filter(image => image !== undefined) as Image[]
 
 			if (arrayOfTex.every( v => v.width === arrayOfTex[0].width) === false)
@@ -89,31 +90,31 @@ export default function App() {
 			// Salvar no topo do objeto o Width e Height
 
 			// Converter elas para cinza (1 canal) só por segurança
-			if(imageBlueprint.red.image?.components === 1)
-				imageBlueprint.red.image = imageBlueprint.red.image.grey()
-			if(imageBlueprint.green.image?.components === 1)
-				imageBlueprint.green.image = imageBlueprint.green.image.grey()
-			if(imageBlueprint.blue.image?.components === 1)
-				imageBlueprint.blue.image = imageBlueprint.blue.image.grey()
-			if(imageBlueprint.alpha.image?.components === 1)
-				imageBlueprint.alpha.image = imageBlueprint.alpha.image.grey()
+			if(image.red.image?.components === 1)
+				image.red.image = image.red.image.grey()
+			if(image.green.image?.components === 1)
+				image.green.image = image.green.image.grey()
+			if(image.blue.image?.components === 1)
+				image.blue.image = image.blue.image.grey()
+			if(image.alpha.image?.components === 1)
+				image.alpha.image = image.alpha.image.grey()
 
 			// Criar uma imagem ou preta ou branca para os restantes
-			if(imageBlueprint.red.image === undefined)
-				imageBlueprint.red.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
-			if(imageBlueprint.green.image === undefined)
-				imageBlueprint.green.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.green.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
-			if(imageBlueprint.blue.image === undefined)
-				imageBlueprint.blue.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.blue.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
-			if(imageBlueprint.alpha.image === undefined)
-				imageBlueprint.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(image.red.image === undefined)
+				image.red.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(image.green.image === undefined)
+				image.green.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.green.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(image.blue.image === undefined)
+				image.blue.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.blue.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(image.alpha.image === undefined)
+				image.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
 			// Criar uma IMAGE e aplicar os 4 canais nela
 			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4), {kind: "RGBA" as ImageKind})
-				.setChannel(0, imageBlueprint.red.image)
-				.setChannel(1, imageBlueprint.green.image)
-				.setChannel(2, imageBlueprint.blue.image)
-				.setChannel(3, imageBlueprint.alpha.image)
+				.setChannel(0, image.red.image)
+				.setChannel(1, image.green.image)
+				.setChannel(2, image.blue.image)
+				.setChannel(3, image.alpha.image)
 
 			// Encoda para DataURL
 			const dataUrlImage = finalTexture.toDataURL()
@@ -126,12 +127,7 @@ export default function App() {
 			// TO DO = Durante o processo de Mix eu to alterando o objeto original, isso ta dando problema na hora de mixar pela segunda vez.
 			// preciso dar um jeito de salvar as configurações do usuário de forma fixa
 			// e configurar o mix num objeto diferente
-			imageBlueprint = {
-				red: {dataURL: undefined, image: undefined, isWhite: false},
-				green: {dataURL: undefined, image: undefined, isWhite: false},
-				blue: {dataURL: undefined, image: undefined, isWhite: false},
-				alpha: {dataURL: undefined, image: undefined, isWhite: false},
-			}
+			// image = undefined
 
 		} catch (error) {
 			console.log(error)
