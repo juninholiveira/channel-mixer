@@ -27,12 +27,7 @@ export default function App() {
 
 	const [preview, setPreview] = useState<string | undefined>(undefined)
 
-	// const [redInputString, setRedInputString] = useState<string | "white" | "black" | undefined>("black")
-	// const [greenInputString, setGreenInputString] = useState<string | "white" | "black" | undefined>("black")
-	// const [blueInputString, setBlueInputString] = useState<string | "white" | "black" | undefined>("black")
-	// const [alphaInputString, setAlphaInputString] = useState<string | "white" | "black" | undefined>("black")
-
-	const imageBlueprint:IImageBlueprint = {
+	let imageBlueprint:IImageBlueprint = {
 		red: {dataURL: undefined, image: undefined, isWhite: false},
 		green: {dataURL: undefined, image: undefined, isWhite: false},
 		blue: {dataURL: undefined, image: undefined, isWhite: false},
@@ -60,6 +55,7 @@ export default function App() {
 			imageBlueprint.alpha.dataURL = value
 			imageBlueprint.alpha.isWhite = isWhite
 		}
+		console.log(imageBlueprint)
 	}
 
 	async function Mix() {
@@ -90,14 +86,9 @@ export default function App() {
 			else if (arrayOfTex.every( v => v.height === arrayOfTex[0].height) === false)
 				throw new Error("Different height")
 
-			// Converter elas para cinza (1 canal) só por segurança
-			const greyedImages = arrayOfTex.map(image => {
-				if (image.components === 1)
-					return image
-				else
-					return image.grey()
-			})
+			// Salvar no topo do objeto o Width e Height
 
+			// Converter elas para cinza (1 canal) só por segurança
 			if(imageBlueprint.red.image?.components === 1)
 				imageBlueprint.red.image = imageBlueprint.red.image.grey()
 			if(imageBlueprint.green.image?.components === 1)
@@ -108,64 +99,39 @@ export default function App() {
 				imageBlueprint.alpha.image = imageBlueprint.alpha.image.grey()
 
 			// Criar uma imagem ou preta ou branca para os restantes
+			if(imageBlueprint.red.image === undefined)
+				imageBlueprint.red.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(imageBlueprint.green.image === undefined)
+				imageBlueprint.green.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.green.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(imageBlueprint.blue.image === undefined)
+				imageBlueprint.blue.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.blue.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+			if(imageBlueprint.alpha.image === undefined)
+				imageBlueprint.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(imageBlueprint.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
 			// Criar uma IMAGE e aplicar os 4 canais nela
+			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4), {kind: "RGBA" as ImageKind})
+				.setChannel(0, imageBlueprint.red.image)
+				.setChannel(1, imageBlueprint.green.image)
+				.setChannel(2, imageBlueprint.blue.image)
+				.setChannel(3, imageBlueprint.alpha.image)
 
-			// let rFill, gFill, bFill, aFill: "white" | "black"
+			// Encoda para DataURL
+			const dataUrlImage = finalTexture.toDataURL()
 
-			// Loads the input files
-			if(redInputString === "white")
-				rTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
-			else if(redInputString === "black")
-				rTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
-			else
-				rTex = await Image.load(redInputString as string)
-
-			if(greenInputString === "white")
-				gTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
-			else if(greenInputString === "black")
-				gTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
-			else
-				gTex = await Image.load(greenInputString as string)
-
-			if(blueInputString === "white")
-				bTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(255), { kind: "RGB" as ImageKind})
-			else if(blueInputString === "black")
-				bTex = new Image(512, 512, new Uint8Array(512 * 512 * 3).fill(0), { kind: "RGB" as ImageKind})
-			else
-				bTex = await Image.load(blueInputString as string)
-
-			if(alphaInputString === "white")
-				aTex = new Image(512, 512, new Array(512 * 512 * 1).fill(255), { kind: "GREY" as ImageKind})
-			else if(alphaInputString === "black")
-				aTex = new Image(512, 512, new Array(512 * 512 * 1).fill(0), { kind: "GREY" as ImageKind})
-			else
-				aTex = await Image.load(alphaInputString as string)
-
-			// Makes sure all of them are grey
-			const greyR = rTex.grey()
-			const greyG = gTex.grey()
-			const greyB = bTex.grey()
-			const greyA = aTex.grey()
-
-			// eslint-disable-next-line no-magic-numbers
-			const newImage = new Image(rTex.height, rTex.width, new Uint8Array(rTex.height * rTex.width * 4).fill(255), { kind: "RGBA" as ImageKind })
-
-			// eslint-disable-next-line no-magic-numbers
-			const mixedImage = newImage.setChannel(0, greyR).setChannel(1, greyG).setChannel(2, greyB).setChannel(3, greyA)
-
-			const dataUrlImage = mixedImage.toDataURL()
-
+			// Exibe na interface
 			setPreview(dataUrlImage)
 			console.log(dataUrlImage)
 
-			// saveBlobToFile(await mixedImage.toBlob())
-
-			// window.fs.writeFile()
-
-			// console.log(dataUrlImage)
-
-			// setFile(dataUrlImage)
+			// Reseta tudo
+			// TO DO = Durante o processo de Mix eu to alterando o objeto original, isso ta dando problema na hora de mixar pela segunda vez.
+			// preciso dar um jeito de salvar as configurações do usuário de forma fixa
+			// e configurar o mix num objeto diferente
+			imageBlueprint = {
+				red: {dataURL: undefined, image: undefined, isWhite: false},
+				green: {dataURL: undefined, image: undefined, isWhite: false},
+				blue: {dataURL: undefined, image: undefined, isWhite: false},
+				alpha: {dataURL: undefined, image: undefined, isWhite: false},
+			}
 
 		} catch (error) {
 			console.log(error)

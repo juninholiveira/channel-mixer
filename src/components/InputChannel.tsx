@@ -17,8 +17,8 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 	const [imageFile, setImageFile] = useState<string | undefined>()
 
 	function handleSwitch() {
+		SetImageBlueprint(channel, undefined, !isWhite)
 		setIsWhite(!isWhite)
-		SetImageBlueprint(channel, undefined, isWhite)
 	}
 
 	function handleDelete() {
