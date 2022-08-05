@@ -64,14 +64,14 @@ export default function App() {
 			// Carregar todos os arquivos de imagem carregados
 			let r, g, b, a : Image | undefined = undefined
 
-			if (redInputString !== "white" && redInputString !== "black" && redInputString !== undefined)
-				r = await Image.load(redInputString)
-			if (greenInputString !== "white" && greenInputString !== "black" && greenInputString !== undefined)
-				g = await Image.load(greenInputString)
-			if (blueInputString !== "white" && blueInputString !== "black" && blueInputString !== undefined)
-				b = await Image.load(blueInputString)
-			if (alphaInputString !== "white" && alphaInputString !== "black" && alphaInputString !== undefined)
-				a = await Image.load(alphaInputString)
+			if (imageBlueprint.r !== undefined)
+				r = await Image.load(imageBlueprint.r)
+			if (imageBlueprint.g !== undefined)
+				g = await Image.load(imageBlueprint.g)
+			if (imageBlueprint.b !== undefined)
+				b = await Image.load(imageBlueprint.b)
+			if (imageBlueprint.a !== undefined)
+				a = await Image.load(imageBlueprint.a)
 
 			// Barrar se houver tamanhos diferentes
 			// eslint-disable-next-line array-element-newline, array-bracket-newline
