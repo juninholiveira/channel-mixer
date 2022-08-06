@@ -21,16 +21,16 @@ interface IImageBlueprint {
 	alpha: IChannelBlueprint,
 }
 
+const imageBlueprint:IImageBlueprint = {
+	red: {dataURL: undefined, image: undefined, isWhite: false},
+	green: {dataURL: undefined, image: undefined, isWhite: false},
+	blue: {dataURL: undefined, image: undefined, isWhite: false},
+	alpha: {dataURL: undefined, image: undefined, isWhite: false},
+}
+
 export default function App() {
 
 	const [preview, setPreview] = useState<string | undefined>(undefined)
-
-	const imageBlueprint:IImageBlueprint = {
-		red: {dataURL: undefined, image: undefined, isWhite: false},
-		green: {dataURL: undefined, image: undefined, isWhite: false},
-		blue: {dataURL: undefined, image: undefined, isWhite: false},
-		alpha: {dataURL: undefined, image: undefined, isWhite: false},
-	}
 
 	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
 		if (channel == "red") {
@@ -61,8 +61,13 @@ export default function App() {
 			// ETAPAS
 
 			// Criar um clone do ImageBlueprint para usar no processamento
-			const image : IImageBlueprint = Object.assign({}, imageBlueprint)
+			let image : IImageBlueprint | undefined = Object.assign({}, imageBlueprint)
 			console.log(image)
+
+			image.red.image = undefined
+			image.green.image = undefined
+			image.blue.image = undefined
+			image.alpha.image = undefined
 
 			// Carregar todos os arquivos de imagem carregados
 			if (image.red.dataURL !== undefined)
@@ -90,13 +95,13 @@ export default function App() {
 			// Salvar no topo do objeto o Width e Height
 
 			// Converter elas para cinza (1 canal) só por segurança
-			if(image.red.image?.components === 1)
+			if(image.red.image?.components !== undefined && image.red.image.components > 1)
 				image.red.image = image.red.image.grey()
-			if(image.green.image?.components === 1)
+			if(image.green.image?.components !== undefined && image.green.image.components > 1)
 				image.green.image = image.green.image.grey()
-			if(image.blue.image?.components === 1)
+			if(image.blue.image?.components !== undefined && image.blue.image.components > 1)
 				image.blue.image = image.blue.image.grey()
-			if(image.alpha.image?.components === 1)
+			if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 				image.alpha.image = image.alpha.image.grey()
 
 			// Criar uma imagem ou preta ou branca para os restantes
@@ -110,7 +115,22 @@ export default function App() {
 				image.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
 			// Criar uma IMAGE e aplicar os 4 canais nela
-			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4), {kind: "RGBA" as ImageKind})
+			// const data = []
+
+			// for (let i = 0; i < (512 * 512); i++) {
+			// 	data.push(image.red.image?.data[i])
+			// }
+			// for (let i = 0; i < (512 * 512); i++) {
+			// 	data.push(image.green.image?.data[i])
+			// }
+			// for (let i = 0; i < (512 * 512); i++) {
+			// 	data.push(image.blue.image?.data[i])
+			// }
+			// for (let i = 0; i < (512 * 512); i++) {
+			// 	data.push(image.alpha.image?.data[i])
+			// }
+
+			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4).fill(0), {kind: "RGBA" as ImageKind})
 				.setChannel(0, image.red.image)
 				.setChannel(1, image.green.image)
 				.setChannel(2, image.blue.image)
@@ -121,13 +141,12 @@ export default function App() {
 
 			// Exibe na interface
 			setPreview(dataUrlImage)
-			console.log(dataUrlImage)
 
 			// Reseta tudo
 			// TO DO = Durante o processo de Mix eu to alterando o objeto original, isso ta dando problema na hora de mixar pela segunda vez.
 			// preciso dar um jeito de salvar as configurações do usuário de forma fixa
 			// e configurar o mix num objeto diferente
-			// image = undefined
+			image = undefined
 
 		} catch (error) {
 			console.log(error)

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
 import { FileArrowUp, FileX, Trash } from "phosphor-react"
@@ -17,14 +17,20 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 	const [imageFile, setImageFile] = useState<string | undefined>()
 
 	function handleSwitch() {
-		SetImageBlueprint(channel, undefined, !isWhite)
-		setIsWhite(!isWhite)
+		// SetImageBlueprint(channel, undefined, !isWhite)
+		setIsWhite(prev => !prev)
+		setImageFile(undefined)
 	}
 
 	function handleDelete() {
 		setImageFile(undefined)
-		SetImageBlueprint(channel, undefined, isWhite)
+		// SetImageBlueprint(channel, undefined, isWhite)
 	}
+
+	useEffect(() => {
+		// console.log(channel, isWhite, imageFile ? true : false)
+		SetImageBlueprint(channel, imageFile, isWhite)
+	}, [isWhite, imageFile])
 
 	const onDrop = useCallback((acceptedFiles:File[]) => {
 
