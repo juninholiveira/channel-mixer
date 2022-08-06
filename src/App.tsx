@@ -34,22 +34,18 @@ export default function App() {
 
 	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
 		if (channel == "red") {
-			// setRedInputString(value)
 			imageBlueprint.red.dataURL = value
 			imageBlueprint.red.isWhite = isWhite
 		}
 		else if (channel == "green") {
-			// setGreenInputString(value)
 			imageBlueprint.green.dataURL = value
 			imageBlueprint.green.isWhite = isWhite
 		}
 		else if (channel == "blue") {
-			// setBlueInputString(value)
 			imageBlueprint.blue.dataURL = value
 			imageBlueprint.blue.isWhite = isWhite
 		}
 		else if (channel == "alpha") {
-			// setAlphaInputString(value)
 			imageBlueprint.alpha.dataURL = value
 			imageBlueprint.alpha.isWhite = isWhite
 		}
@@ -57,19 +53,15 @@ export default function App() {
 
 	async function Mix() {
 		try {
-
-			// ETAPAS
-
-			// Criar um clone do ImageBlueprint para usar no processamento
-			let image : IImageBlueprint | undefined = Object.assign({}, imageBlueprint)
-			console.log(image)
+			// Clones the ImageBlueprint to use in the proccessing
+			const image : IImageBlueprint = Object.assign({}, imageBlueprint)
 
 			image.red.image = undefined
 			image.green.image = undefined
 			image.blue.image = undefined
 			image.alpha.image = undefined
 
-			// Carregar todos os arquivos de imagem carregados
+			// Loads all the image files textures inputed from the user
 			if (image.red.dataURL !== undefined)
 				image.red.image = await Image.load(image.red.dataURL)
 			if (image.green.dataURL !== undefined)
@@ -79,7 +71,7 @@ export default function App() {
 			if (image.alpha.dataURL !== undefined)
 				image.alpha.image = await Image.load(image.alpha.dataURL)
 
-			// Barrar se houver tamanhos diferentes
+			// Cancel if found different sizes
 			const arrayOfTex = [
 				image.red.image,
 				image.green.image,
@@ -92,9 +84,9 @@ export default function App() {
 			else if (arrayOfTex.every( v => v.height === arrayOfTex[0].height) === false)
 				throw new Error("Different height")
 
-			// Salvar no topo do objeto o Width e Height
+			// Saves width and height at the top of the object
 
-			// Converter elas para cinza (1 canal) só por segurança
+			// Convert the colored images to grey (1 channel)
 			if(image.red.image?.components !== undefined && image.red.image.components > 1)
 				image.red.image = image.red.image.grey()
 			if(image.green.image?.components !== undefined && image.green.image.components > 1)
@@ -104,7 +96,7 @@ export default function App() {
 			if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 				image.alpha.image = image.alpha.image.grey()
 
-			// Criar uma imagem ou preta ou branca para os restantes
+			// Creates a new black or white image for the remaining
 			if(image.red.image === undefined)
 				image.red.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 			if(image.green.image === undefined)
@@ -114,39 +106,18 @@ export default function App() {
 			if(image.alpha.image === undefined)
 				image.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
-			// Criar uma IMAGE e aplicar os 4 canais nela
-			// const data = []
-
-			// for (let i = 0; i < (512 * 512); i++) {
-			// 	data.push(image.red.image?.data[i])
-			// }
-			// for (let i = 0; i < (512 * 512); i++) {
-			// 	data.push(image.green.image?.data[i])
-			// }
-			// for (let i = 0; i < (512 * 512); i++) {
-			// 	data.push(image.blue.image?.data[i])
-			// }
-			// for (let i = 0; i < (512 * 512); i++) {
-			// 	data.push(image.alpha.image?.data[i])
-			// }
-
+			// Join the channels
 			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4).fill(0), {kind: "RGBA" as ImageKind})
 				.setChannel(0, image.red.image)
 				.setChannel(1, image.green.image)
 				.setChannel(2, image.blue.image)
 				.setChannel(3, image.alpha.image)
 
-			// Encoda para DataURL
+			// Encode to DataURL
 			const dataUrlImage = finalTexture.toDataURL()
 
-			// Exibe na interface
+			// Show on interface
 			setPreview(dataUrlImage)
-
-			// Reseta tudo
-			// TO DO = Durante o processo de Mix eu to alterando o objeto original, isso ta dando problema na hora de mixar pela segunda vez.
-			// preciso dar um jeito de salvar as configurações do usuário de forma fixa
-			// e configurar o mix num objeto diferente
-			image = undefined
 
 		} catch (error) {
 			console.log(error)
