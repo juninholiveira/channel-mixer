@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { app, BrowserWindow } = require("electron")
-const path = require("path")
+import { app, BrowserWindow, ipcMain } from "electron"
+import * as path from "path"
 
 function createWindow() {
 
@@ -23,7 +22,7 @@ function createWindow() {
 
 	// Load index.html
 	mainWindow.loadURL(
-		app.isPackaged ? `file://${path.join(__dirname, "../build/index.html")}` : "http://localhost:3000",
+		app.isPackaged ? `file://${__dirname}/../index.html` : "http://localhost:3000/index.html",
 	)
 
 	// Open the DevTools in a separate window, only in development mode
@@ -49,4 +48,8 @@ app.on("activate", () => {
 	if (BrowserWindow.getAllWindows().length === maxNumberOfWindows) {
 		createWindow()
 	}
+})
+
+ipcMain.on("file", (event, args) => {
+	console.log(args)
 })
