@@ -1,4 +1,9 @@
-declare module "*.jpg";
-declare module "*.png";
-declare module "*.jpeg";
-declare module "*.gif";
+export interface IAPI {
+	sendFile: (file: string) => void,
+}
+
+declare global {
+	interface Window {
+		api: IAPI
+	}
+}
