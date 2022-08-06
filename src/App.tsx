@@ -19,6 +19,8 @@ interface IImageBlueprint {
 	green: IChannelBlueprint,
 	blue: IChannelBlueprint,
 	alpha: IChannelBlueprint,
+	width: number | undefined
+	height: number | undefined
 }
 
 const imageBlueprint:IImageBlueprint = {
@@ -26,6 +28,8 @@ const imageBlueprint:IImageBlueprint = {
 	green: {dataURL: undefined, image: undefined, isWhite: false},
 	blue: {dataURL: undefined, image: undefined, isWhite: false},
 	alpha: {dataURL: undefined, image: undefined, isWhite: false},
+	width: undefined,
+	height: undefined,
 }
 
 export default function App() {
@@ -85,6 +89,8 @@ export default function App() {
 				throw new Error("Different height")
 
 			// Saves width and height at the top of the object
+			image.width = arrayOfTex.length > 0 ? arrayOfTex[0].width : 512
+			image.height = arrayOfTex.length > 0 ? arrayOfTex[0].height : 512
 
 			// Convert the colored images to grey (1 channel)
 			if(image.red.image?.components !== undefined && image.red.image.components > 1)
@@ -98,16 +104,16 @@ export default function App() {
 
 			// Creates a new black or white image for the remaining
 			if(image.red.image === undefined)
-				image.red.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+				image.red.image = new Image(image.width, image.height, new Uint8Array(image.width * image.height).fill(image.red.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 			if(image.green.image === undefined)
-				image.green.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.green.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+				image.green.image = new Image(image.width, image.height, new Uint8Array(image.width * image.height).fill(image.green.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 			if(image.blue.image === undefined)
-				image.blue.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.blue.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+				image.blue.image = new Image(image.width, image.height, new Uint8Array(image.width * image.height).fill(image.blue.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 			if(image.alpha.image === undefined)
-				image.alpha.image = new Image(512, 512, new Uint8Array(512 * 512).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
+				image.alpha.image = new Image(image.width, image.height, new Uint8Array(image.width * image.height).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
 			// Join the channels
-			const finalTexture = new Image(512, 512, new Uint8Array(512 * 512 * 4).fill(0), {kind: "RGBA" as ImageKind})
+			const finalTexture = new Image(image.width, image.height, new Uint8Array(image.width * image.height * 4).fill(0), {kind: "RGBA" as ImageKind})
 				.setChannel(0, image.red.image)
 				.setChannel(1, image.green.image)
 				.setChannel(2, image.blue.image)
