@@ -79,19 +79,24 @@
 			"build/**/*"
 		],
 		"directories": {
-			"buildResources": "assets"
+			"buildResources": "public"
 		},
 		"mac": {
-			"target": "dmg"
+			"target": "dmg",
+			"icon": "./public/icon.icns"
+		},
+		"linux": {
+			"target": "deb",
+			"icon": "./public/build/icons"
 		},
 		"win": {
+			"icon": "./public/icon.ico",
 			"target": [
 				"nsis",
 				"portable"
-			]
-		},
-		"linux": {
-			"target": "deb"
+			],
+			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}.${ext}",
+			"publisherName": "Leandro Junior"
 		},
 		"nsis": {
 			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}_setup.${ext}",
