@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
 import { FileArrowUp, FileX, Trash } from "phosphor-react"
@@ -8,16 +8,29 @@ import Switch from "./Switch"
 
 interface IInputChannelProps {
 	channel: TChannel
+	SetImageBlueprint: (channel:TChannel, value:string | undefined, isWhite:boolean) => void
 }
 
-export default function InputChannel({ channel }:IInputChannelProps) {
+export default function InputChannel({ channel, SetImageBlueprint }:IInputChannelProps) {
 
 	const [isWhite, setIsWhite] = useState(false)
 	const [imageFile, setImageFile] = useState<string | undefined>()
 
 	function handleSwitch() {
-		setIsWhite(!isWhite)
+		// SetImageBlueprint(channel, undefined, !isWhite)
+		setIsWhite(prev => !prev)
+		setImageFile(undefined)
 	}
+
+	function handleDelete() {
+		setImageFile(undefined)
+		// SetImageBlueprint(channel, undefined, isWhite)
+	}
+
+	useEffect(() => {
+		// console.log(channel, isWhite, imageFile ? true : false)
+		SetImageBlueprint(channel, imageFile, isWhite)
+	}, [isWhite, imageFile])
 
 	const onDrop = useCallback((acceptedFiles:File[]) => {
 
@@ -28,6 +41,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 		reader.onload = () => {
 			setImageFile(reader.result as string)
 			setIsWhite(false)
+			SetImageBlueprint(channel, reader.result as string, isWhite)
 		}
 
 		reader.readAsDataURL(acceptedFiles[0])
@@ -56,7 +70,7 @@ export default function InputChannel({ channel }:IInputChannelProps) {
 					(isDragAccept ? "border-[#00DA16] border-dashed" : isDragReject ? "border-[#DA0000] border-dashed" : "border-light-accent")
 				}
 				// Conditionally add an onClick event only if there's an image loaded, or else it would interfere with the click to open file system dialog
-				{...(imageFile != undefined && { onClick: () => setImageFile(undefined)})}
+				{...(imageFile != undefined && { onClick: () => handleDelete()})}
 
 			>
 				<input {...getInputProps()}/>
