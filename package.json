@@ -100,8 +100,15 @@
 		},
 		"nsis": {
 			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}_setup.${ext}",
+			"oneClick": false,
+			"perMachine": true,
 			"allowToChangeInstallationDirectory": true,
-			"oneClick": false
+			"installerIcon": "./public/build/installerIcon.ico",
+			"uninstallerIcon": "./public/build/installerIcon.ico",
+			"installerHeader": "./public/build/installerHeader.bmp",
+			"installerSidebar": "./public/build/installerSidebar.bmp",
+			"uninstallerSidebar": "./public/build/installerSidebar.bmp",
+			"uninstallDisplayName": "${productName} ${version}"
 		},
 		"portable": {
 			"artifactName": "${productName}_${env.RESOLVED_VERSION}_${os}_portable.${ext}"
