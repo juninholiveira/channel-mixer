@@ -1,9 +1,11 @@
-import { app, BrowserWindow, ipcMain } from "electron"
+import { app, BrowserWindow, ipcMain, dialog } from "electron"
 import * as path from "path"
+
+let mainWindow: BrowserWindow
 
 function createWindow() {
 
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
 		backgroundColor: "#1E1E1E",
@@ -50,6 +52,11 @@ app.on("activate", () => {
 	}
 })
 
-ipcMain.on("file", (event, args) => {
-	console.log(args)
+ipcMain.on("save", (event, args) => {
+
+	const returnedPath = dialog.showSaveDialogSync(mainWindow, {
+		title: "Save the mixed image",
+		defaultPath: args[1],
+	})
+	console.log(returnedPath)
 })
