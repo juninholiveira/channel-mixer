@@ -125,9 +125,6 @@ export default function App() {
 			// Show on interface
 			setPreview(dataUrlImage)
 
-			// Send the image file to the main proccess
-			// window.api.sendFile([dataUrlImage, "ORM"])
-
 		} catch (error) {
 			console.log(error)
 		}

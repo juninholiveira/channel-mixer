@@ -8,7 +8,7 @@ export default function ImageOutput({preview}:IImageOutputProps) {
 
 	function handleSave() {
 		if (preview)
-			window.api.saveFile(preview, "ORM")
+			window.api.saveFile(preview)
 	}
 
 	return (

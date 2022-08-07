@@ -18,6 +18,7 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
+			devTools: app.isPackaged ? false : true,
 			preload: path.join(__dirname, "preload.js"),
 		},
 	})
@@ -56,20 +57,16 @@ app.on("activate", () => {
 
 ipcMain.on("save", (event, args) => {
 
-	const file = args[0]
-	const suffix = args[1]
+	const file = args
 
 	const returnedPath = dialog.showSaveDialogSync(mainWindow, {
 		title: "Save the mixed image",
 		filters: [
-			{ name: "JPEG", extensions: ["jpg", "jpeg"] },
-			{ name: "PNG", extensions: ["png"] },
-			{ name: "All Files", extensions: ["*"] },
+			// { name: "JPEG", extensions: ["jpg", "jpeg"] },
+			{ name: "PNG", extensions: ["png"] }, { name: "All Files", extensions: ["*"] },
 		],
-		message: "message",
-		buttonLabel: "buttonLabel",
 	})
 
 	if (returnedPath)
-		SaveFile(file, returnedPath, suffix)
+		SaveFile(file, returnedPath)
 })
