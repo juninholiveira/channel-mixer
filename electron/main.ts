@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain, dialog } from "electron"
 import * as path from "path"
 
+import SaveFile from "../src/services/SaveFile"
+
 let mainWindow: BrowserWindow
 
 function createWindow() {
@@ -54,9 +56,20 @@ app.on("activate", () => {
 
 ipcMain.on("save", (event, args) => {
 
+	const file = args[0]
+	const suffix = args[1]
+
 	const returnedPath = dialog.showSaveDialogSync(mainWindow, {
 		title: "Save the mixed image",
-		defaultPath: args[1],
+		filters: [
+			{ name: "JPEG", extensions: ["jpg", "jpeg"] },
+			{ name: "PNG", extensions: ["png"] },
+			{ name: "All Files", extensions: ["*"] },
+		],
+		message: "message",
+		buttonLabel: "buttonLabel",
 	})
-	console.log(returnedPath)
+
+	if (returnedPath)
+		SaveFile(file, returnedPath, suffix)
 })

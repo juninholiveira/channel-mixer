@@ -8,7 +8,7 @@ export default function ImageOutput({preview}:IImageOutputProps) {
 
 	function handleSave() {
 		if (preview)
-			window.api.saveFile([preview, "ORM"])
+			window.api.saveFile(preview, "ORM")
 	}
 
 	return (
@@ -22,7 +22,7 @@ export default function ImageOutput({preview}:IImageOutputProps) {
 				preview && <FloppyDisk color="#CFF465" weight="regular" size={32} className="hidden group-hover:block"/>
 			}
 			<div className={"absolute -z-10 h-full w-full m-0 p-0 flex"}>
-				{ preview && <img src={preview} alt="image" className="max-w-full max-h-full m-auto group-hover:brightness-50" /> }
+				{ preview && <img src={`data:image/png;base64,${preview}`} alt="image" className="max-w-full max-h-full m-auto group-hover:brightness-50" /> }
 			</div>
 		</div>
 	)

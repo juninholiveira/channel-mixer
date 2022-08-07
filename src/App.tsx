@@ -120,7 +120,7 @@ export default function App() {
 				.setChannel(3, image.alpha.image)
 
 			// Encode to DataURL
-			const dataUrlImage = finalTexture.toDataURL()
+			const dataUrlImage = await finalTexture.toBase64()
 
 			// Show on interface
 			setPreview(dataUrlImage)

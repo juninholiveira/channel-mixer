@@ -1,5 +1,5 @@
 export interface IAPI {
-	saveFile: (file: string[]) => void,
+	saveFile: (file: string, suffix: string) => void,
 }
 
 declare global {
