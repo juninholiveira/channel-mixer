@@ -1,9 +1,13 @@
-import { app, BrowserWindow, ipcMain } from "electron"
+import { app, BrowserWindow, ipcMain, dialog } from "electron"
 import * as path from "path"
+
+import SaveFile from "../src/services/SaveFile"
+
+let mainWindow: BrowserWindow
 
 function createWindow() {
 
-	const mainWindow = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
 		backgroundColor: "#1E1E1E",
@@ -14,6 +18,7 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
+			devTools: app.isPackaged ? false : true,
 			preload: path.join(__dirname, "preload.js"),
 		},
 	})
@@ -50,6 +55,18 @@ app.on("activate", () => {
 	}
 })
 
-ipcMain.on("file", (event, args) => {
-	console.log(args)
+ipcMain.on("save", (event, args) => {
+
+	const file = args
+
+	const returnedPath = dialog.showSaveDialogSync(mainWindow, {
+		title: "Save the mixed image",
+		filters: [
+			// { name: "JPEG", extensions: ["jpg", "jpeg"] },
+			{ name: "PNG", extensions: ["png"] }, { name: "All Files", extensions: ["*"] },
+		],
+	})
+
+	if (returnedPath)
+		SaveFile(file, returnedPath)
 })

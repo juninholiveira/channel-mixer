@@ -8,7 +8,7 @@ A environment variable called `RESOLVED_VERSION` is needed to create the artifac
 
 ```
 # Dummy version to be used by electron-builder when building locally
-RESOLVED_VERSION=v0.0.0`
+RESOLVED_VERSION=v0.0.0
 ```
 
 ## CI/CD
