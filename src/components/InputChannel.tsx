@@ -65,7 +65,7 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 		<div id="input-channel" className="flex flex-col gap-3 w-36">
 			<div id="image-input" {...getRootProps()}
 				className={
-					"w-full h-36 border-2 rounded-md flex items-center justify-center relative group cursor-pointer"
+					"group w-full h-36 border-2 rounded-md flex items-center justify-center relative cursor-pointer"
 					+ " " +
 					(isDragAccept ? "border-[#00DA16] border-dashed" : isDragReject ? "border-[#DA0000] border-dashed" : "border-light-accent")
 				}
@@ -87,7 +87,7 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 					imageFile != undefined ? <Trash color="#CFF465" weight="regular" size={32} className="hidden group-hover:block"/> : <></>
 				}
 				{
-					imageFile == undefined ? <FileArrowUp color="#CFF465" weight="regular" size={32} className="hidden group-hover:block" /> : <></>
+					imageFile == undefined ? <FileArrowUp color={isWhite ? "#000000" : "#CFF465"} weight="regular" size={32} className="hidden group-hover:block" /> : <></>
 				}
 
 				<div className={
@@ -103,13 +103,14 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 				</div>
 			</div>
 			<div id="bottom" className="flex flex-row gap-2">
-				<textarea id="channel-suffix"
+				{/* <textarea id="channel-suffix"
 					className="
 						resize-none p-1 border-2 h-6 border-light-accent bg-light-background overflow-hidden rounded-md
 						text-xs text-light-accent leading-3
 						focus:outline-none focus:border-[#00DA16]"
-					maxLength={10} placeholder={`${channel} suffix...`}/>
+					maxLength={10} placeholder={`${channel} suffix...`}/> */}
 				<Switch isWhite={isWhite} isEnable={imageFile == undefined} handleSwitch={() => handleSwitch()} />
+
 			</div>
 		</div>
 	)
