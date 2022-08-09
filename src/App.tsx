@@ -93,12 +93,20 @@ export default function App() {
 			image.height = arrayOfTex.length > 0 ? arrayOfTex[0].height : 512
 
 			// Convert the colored images to grey (1 channel)
+			// if(image.red.image?.components !== undefined && image.red.image.components > 1)
+			// 	image.red.image = image.red.image.grey()
+			// if(image.green.image?.components !== undefined && image.green.image.components > 1)
+			// 	image.green.image = image.green.image.grey()
+			// if(image.blue.image?.components !== undefined && image.blue.image.components > 1)
+			// 	image.blue.image = image.blue.image.grey()
+			// if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
+			// 	image.alpha.image = image.alpha.image.grey()
 			if(image.red.image?.components !== undefined && image.red.image.components > 1)
-				image.red.image = image.red.image.grey()
+				image.red.image = image.red.image.getChannel(0, {})
 			if(image.green.image?.components !== undefined && image.green.image.components > 1)
-				image.green.image = image.green.image.grey()
+				image.green.image = image.green.image.getChannel(1, {})
 			if(image.blue.image?.components !== undefined && image.blue.image.components > 1)
-				image.blue.image = image.blue.image.grey()
+				image.blue.image = image.blue.image.getChannel(2, {})
 			if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 				image.alpha.image = image.alpha.image.grey()
 
