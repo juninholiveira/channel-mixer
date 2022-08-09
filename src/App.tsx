@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { useState } from "react"
 
-import { Image, ImageKind } from "image-js"
+import { GreyAlgorithm, Image, ImageKind } from "image-js"
 
 import ImageOutput from "./components/ImageOutput"
 import InputChannel from "./components/InputChannel"
@@ -102,11 +102,11 @@ export default function App() {
 			// if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 			// 	image.alpha.image = image.alpha.image.grey()
 			if(image.red.image?.components !== undefined && image.red.image.components > 1)
-				image.red.image = image.red.image.getChannel(0, {})
+				image.red.image = image.red.image.grey({algorithm: "red" as GreyAlgorithm})
 			if(image.green.image?.components !== undefined && image.green.image.components > 1)
-				image.green.image = image.green.image.getChannel(1, {})
+				image.green.image = image.green.image.grey({algorithm: "green" as GreyAlgorithm})
 			if(image.blue.image?.components !== undefined && image.blue.image.components > 1)
-				image.blue.image = image.blue.image.getChannel(2, {})
+				image.blue.image = image.blue.image.grey({algorithm: "bblue" as GreyAlgorithm})
 			if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 				image.alpha.image = image.alpha.image.grey()
 
