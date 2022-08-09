@@ -102,7 +102,7 @@ export default function InputChannel({ channel, SetImageBlueprint }:IInputChanne
 					}
 				</div>
 			</div>
-			<div id="bottom" className="flex flex-row gap-2">
+			<div id="bottom" className="flex flex-row gap-2 items-center justify-center">
 				{/* <textarea id="channel-suffix"
 					className="
 						resize-none p-1 border-2 h-6 border-light-accent bg-light-background overflow-hidden rounded-md
