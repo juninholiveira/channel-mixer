@@ -106,7 +106,7 @@ export default function App() {
 			if(image.green.image?.components !== undefined && image.green.image.components > 1)
 				image.green.image = image.green.image.grey({algorithm: "green" as GreyAlgorithm})
 			if(image.blue.image?.components !== undefined && image.blue.image.components > 1)
-				image.blue.image = image.blue.image.grey({algorithm: "bblue" as GreyAlgorithm})
+				image.blue.image = image.blue.image.grey({algorithm: "blue" as GreyAlgorithm})
 			if(image.alpha.image?.components !== undefined && image.alpha.image.components > 1)
 				image.alpha.image = image.alpha.image.grey()
 
