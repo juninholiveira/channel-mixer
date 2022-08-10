@@ -1,5 +1,5 @@
 <p align="center">
-<img src="build/icon.png" alt="Channel Mixer" height="100">
+<img src="public/icon.png" alt="Channel Mixer" height="100">
 </p>
 
 <h1 align="center">Channel Mixer</h1>
