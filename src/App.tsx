@@ -35,6 +35,7 @@ const imageBlueprint:IImageBlueprint = {
 export default function App() {
 
 	const [preview, setPreview] = useState<string | undefined>(undefined)
+	let isLoading = false
 
 	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
 		if (channel == "red") {
@@ -57,6 +58,8 @@ export default function App() {
 
 	async function Mix() {
 		try {
+			isLoading = true
+
 			// Clones the ImageBlueprint to use in the proccessing
 			const image : IImageBlueprint = Object.assign({}, imageBlueprint)
 
@@ -133,6 +136,8 @@ export default function App() {
 			// Show on interface
 			setPreview(dataUrlImage)
 
+			isLoading = false
+
 		} catch (error) {
 			console.log(error)
 		}
@@ -147,7 +152,7 @@ export default function App() {
 				<InputChannel channel="alpha" SetImageBlueprint={(channel, value, isWhite) => SetImageBlueprint(channel, value, isWhite)}/>
 			</section>
 			<section id="output" className="flex flex-row gap-3">
-				<MixButton handleClick={() => Mix()}/>
+				<MixButton handleClick={() => Mix()} isLoading={isLoading}/>
 				<ImageOutput preview={preview}/>
 			</section>
 		</main>
