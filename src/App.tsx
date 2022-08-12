@@ -6,6 +6,7 @@ import { GreyAlgorithm, Image, ImageKind } from "image-js"
 import ImageOutput from "./components/ImageOutput"
 import InputChannel from "./components/InputChannel"
 import MixButton from "./components/MixButton"
+import useAlphaStateStore from "./stores/alphaState"
 import { TChannel } from "./types/types"
 
 interface IChannelBlueprint {
@@ -35,6 +36,8 @@ const imageBlueprint:IImageBlueprint = {
 export default function App() {
 
 	const [preview, setPreview] = useState<string | undefined>(undefined)
+	const alphaState = useAlphaStateStore(state => state.alphaState)
+	// let isAlphaActivated = true
 
 	function SetImageBlueprint (channel:TChannel, value:string | undefined, isWhite:boolean) {
 		if (channel == "red") {
@@ -54,6 +57,11 @@ export default function App() {
 			imageBlueprint.alpha.isWhite = isWhite
 		}
 	}
+
+	// function switchAlphaState() {
+	// 	console.log("switchAlphaState called")
+	// 	isAlphaActivated = !isAlphaActivated
+	// }
 
 	async function Mix() {
 		try {
@@ -121,11 +129,20 @@ export default function App() {
 				image.alpha.image = new Image(image.width, image.height, new Uint8Array(image.width * image.height).fill(image.alpha.isWhite ? 255 : 0), {kind: "GREY" as ImageKind})
 
 			// Join the channels
-			const finalTexture = new Image(image.width, image.height, new Uint8Array(image.width * image.height * 4).fill(0), {kind: "RGBA" as ImageKind})
-				.setChannel(0, image.red.image)
-				.setChannel(1, image.green.image)
-				.setChannel(2, image.blue.image)
-				.setChannel(3, image.alpha.image)
+			let finalTexture
+			if(alphaState) {
+				finalTexture = new Image(image.width, image.height, new Uint8Array(image.width * image.height * 4).fill(0), {kind: "RGBA" as ImageKind})
+					.setChannel(0, image.red.image)
+					.setChannel(1, image.green.image)
+					.setChannel(2, image.blue.image)
+					.setChannel(3, image.alpha.image)
+			}
+			else {
+				finalTexture = new Image(image.width, image.height, new Uint8Array(image.width * image.height * 3).fill(0), {kind: "RGB" as ImageKind})
+					.setChannel(0, image.red.image)
+					.setChannel(1, image.green.image)
+					.setChannel(2, image.blue.image)
+			}
 
 			// Encode to DataURL
 			const dataUrlImage = await finalTexture.toBase64()
